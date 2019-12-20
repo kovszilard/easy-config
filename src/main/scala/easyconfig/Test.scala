@@ -1,45 +1,32 @@
-//package easyconfig
-//
-//import Config._
-//import shapeless._
-//
-//case class Foo(num: Int)
-//case class Bar(num: Int, str: String)
-//
-//object Test extends App {
-//
-//  println("Foo from env: " + readFromEnv[Foo])
-//  println("Bar from env: " + readFromEnv[Bar])
-//
-////  println("Foo from env: " + config[Foo])
-////  println("Bar from env: " + config[Bar])
-//
-//  val fooGen = readFromEnv[Foo]
-//
-//  val barGen = readFromEnv[Bar]
-//
-//  println(Generics2CaseClass[Foo].convert(fooGen))
-//  println(Generics2CaseClass[Bar].convert(barGen))
-//
-//  println(Generics2CaseClass[Foo].convert(readFromEnv[Foo]))
-//  println(Generics2CaseClass[Bar].convert(readFromEnv[Bar]))
-//
-//  import EnvReader._
-//
-//  implicitly[EnvReader[Foo]]
-//
-//  def c = {
-//    Generics2CaseClass[Foo].convert(readFromEnv[Foo])
-//  }
-//
-//
-////  def a[A]: A = {
-//////    val e = EnvReader[A]
-//////    val g = Generic[A]
-////    Generic[A].from(EnvReader[A].readEnv)
-////  }
-//
-////  def r[A, X <: HList](implicit envReader: EnvReader.Aux[A, X], generic: Generic.Aux[A, X], ev:  ): A = generic.from(envReader.readEnv)
-////  r[Foo]
-//
-//}
+package easyconfig
+
+import EnvReader._
+import shapeless._
+import shapeless.labelled.FieldType
+
+object Test extends App {
+
+  case class Foo(str: String, num: Int)
+
+
+  val generic = LabelledGeneric[Foo]
+
+  val sStr = Symbol("str")
+  val sNum = Symbol("num")
+
+  implicitly[EnvReader[HNil]]
+  implicitly[EnvReader[FieldType[sStr.type, Int]]]
+  implicitly[EnvReader[FieldType[sStr.type, String]]]
+//  implicitly[EnvReader[FieldType[sNum.type, Int] :: FieldType[sStr.type, String]]]
+  implicitly[EnvReader[FieldType[sStr.type, String] :: HNil]]
+
+  println(implicitly[EnvReader[FieldType[sStr.type, String]]].readEnv)
+  println(implicitly[EnvReader[FieldType[sNum.type, Int]]].readEnv)
+
+  println(implicitly[EnvReader[FieldType[sNum.type, Int] :: HNil]].readEnv)
+
+  println(implicitly[EnvReader[FieldType[sStr.type, String] :: FieldType[sNum.type, Int] :: HNil]].readEnv)
+  
+  println(implicitly[EnvReader[Foo]].readEnv)
+
+}

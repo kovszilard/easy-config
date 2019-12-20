@@ -35,10 +35,10 @@ object EnvReader {
 
   def apply[A](implicit envReader: EnvReader[A]): Aux[A, envReader.Out] = envReader
 
-  implicit val hnilEnvReader: Aux[HNil, Either[AllErrors, HNil]] = new EnvReader[HNil] {
-    type Out = Either[AllErrors, HNil]
+  implicit val hnilEnvReader: Aux[HNil, HNil] = new EnvReader[HNil] {
+    type Out = HNil
 
-    def readEnv: Out = Right(HNil)
+    def readEnv: Out = HNil
   }
 
   implicit def fieldTypeEnvReader[K <: Symbol, V](implicit witness: Witness.Aux[K], parser: Parser[V]): Aux[FieldType[K, V], Either[AllErrors, V]] =
@@ -48,8 +48,16 @@ object EnvReader {
       def readEnv: Out = getEnv(fieldNameToEnvVar(witness.value.name))
     }
 
+//  implicit def hHNil[H , HO, TO](implicit
+//                                                               hEnvReader: Lazy[EnvReader.Aux[H, HO]],
+//                                                               tEnvReader: EnvReader.Aux[HNil, TO]): Aux[H :: HNil, HO :: TO] =
+//    new EnvReader[H :: HNil] {
+//      type Out = HO :: Either[AllErrors, HNil]
+//
+//      def readEnv: Out = hEnvReader.value.readEnv :: Right(HNil)
+//    }
 
-  implicit def hlistEnvReader[K <: Symbol, V, H <: FieldType[K, V], HO, T <: HList, TO <: HList](implicit
+  implicit def hlistEnvReader[H , HO, T <: HList, TO <: HList](implicit
                                                               hEnvReader: Lazy[EnvReader.Aux[H, HO]],
                                                               tEnvReader: EnvReader.Aux[T, TO]): Aux[H :: T, HO :: TO] =
     new EnvReader[H :: T] {
