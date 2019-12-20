@@ -48,15 +48,6 @@ object EnvReader {
       def readEnv: Out = getEnv(fieldNameToEnvVar(witness.value.name))
     }
 
-//  implicit def hHNil[H , HO, TO](implicit
-//                                                               hEnvReader: Lazy[EnvReader.Aux[H, HO]],
-//                                                               tEnvReader: EnvReader.Aux[HNil, TO]): Aux[H :: HNil, HO :: TO] =
-//    new EnvReader[H :: HNil] {
-//      type Out = HO :: Either[AllErrors, HNil]
-//
-//      def readEnv: Out = hEnvReader.value.readEnv :: Right(HNil)
-//    }
-
   implicit def hlistEnvReader[H , HO, T <: HList, TO <: HList](implicit
                                                               hEnvReader: Lazy[EnvReader.Aux[H, HO]],
                                                               tEnvReader: EnvReader.Aux[T, TO]): Aux[H :: T, HO :: TO] =
