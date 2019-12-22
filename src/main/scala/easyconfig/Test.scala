@@ -3,6 +3,7 @@ package easyconfig
 import EnvReader._
 import shapeless._
 import shapeless.ops._
+import shapeless.syntax._
 import shapeless.labelled.FieldType
 
 object Test extends App {
@@ -16,6 +17,8 @@ object Test extends App {
 //  println(default.apply())
 
   val zipped = fromEnv.zip(default)
+
+  println(zipped)
 
   object envOrDefault extends Poly1 {
     implicit def allCase[A]: Case.Aux[(Either[AllErrors, A], Option[A]), Either[AllErrors, A]] =
@@ -37,13 +40,13 @@ object Test extends App {
 
   println(Generic[Foo].from(finalEnv.map(envOrThrow)))
 
-//  def readConfig[C, CO <: HList, DO <: HList, EO <: HList](implicit gen: Generic.Aux[C, CO], envReader: EnvReader.Aux[CO, EO], default: Default.AsOptions.Aux[C, DO]): C = {
+//  def readConfig[H1 <: HList, H1O <: HList](implicit envReader: EnvReader.Aux[H1, H1O]): HList = {
 //    val fromEnv = envReader.readEnv
-//    val default0 = default.apply()
-//    val zipped = fromEnv.zip(default0)
-//    val finalEnv = zipped.map(envOrDefault)
-//    val finalHlist = finalEnv.map(envOrThrow)
-//    gen.from(finalHlist)
+//    fromEnv.zip(fromEnv)
+////    val zipped = fromEnv.zip(default0)
+////    val finalEnv = zipped.map(envOrDefault)
+////    val finalHlist = finalEnv.map(envOrThrow)
+////    gen.from(finalHlist)
 //  }
 
 
