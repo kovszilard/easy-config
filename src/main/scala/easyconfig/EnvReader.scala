@@ -18,22 +18,21 @@ object EnvReader {
 
   type Aux[I, O] = EnvReader[I] { type Out = O }
 
-  def fieldNameToEnvVar(name: String): String = name.flatMap( c => if(c.isUpper) List('_', c) else List(c)).mkString.toUpperCase
-  def fieldNameToParam(name: String): String = "--" + name.flatMap( c => if(c.isUpper) List('-', c) else List(c)).mkString.toLowerCase
+  def apply[A](implicit envReader: EnvReader[A]): Aux[A, envReader.Out] = envReader
 
-  def getEnv[A](envVal: String)(implicit parser: Parser[A]): Either[AllErrors, A] = {
-    val envValValue = sys.env.get(envVal)
+  private def fieldNameToEnvVar(name: String): String = name.flatMap( c => if(c.isUpper) List('_', c) else List(c)).mkString.toUpperCase
+
+  private def getEnv[A](fieldName: String)(implicit parser: Parser[A]): Either[EnvReaderError, A] = {
+    val envValValue = sys.env.get(fieldNameToEnvVar(fieldName))
     envValValue match {
       case Some(v) => parser.parse(v) match {
-        case Failure(exception) => Left(EnvVarParseError(envVal, exception.getMessage))
+        case Failure(exception) => Left(EnvParseError(fieldNameToEnvVar(fieldName), exception.getMessage))
         case Success(value) => Right(value)
       }
-      case None => Left(EnvVarNotFound(envVal))
+      case None => Left(EnvNotFound(fieldNameToEnvVar(fieldName)))
     }
 
   }
-
-  def apply[A](implicit envReader: EnvReader[A]): Aux[A, envReader.Out] = envReader
 
   implicit val hnilEnvReader: Aux[HNil, HNil] = new EnvReader[HNil] {
     type Out = HNil
@@ -41,11 +40,11 @@ object EnvReader {
     def readEnv: Out = HNil
   }
 
-  implicit def fieldTypeEnvReader[K <: Symbol, V](implicit witness: Witness.Aux[K], parser: Parser[V]): Aux[FieldType[K, V], Either[AllErrors, V]] =
+  implicit def fieldTypeEnvReader[K <: Symbol, V](implicit witness: Witness.Aux[K], parser: Parser[V]): Aux[FieldType[K, V], Either[EnvReaderError, V]] =
     new EnvReader[FieldType[K, V]] {
-      type Out = Either[AllErrors, V]
+      type Out = Either[EnvReaderError, V]
 
-      def readEnv: Out = getEnv(fieldNameToEnvVar(witness.value.name))
+      def readEnv: Out = getEnv(witness.value.name)
     }
 
   implicit def hlistEnvReader[H , HO, T <: HList, TO <: HList](implicit
@@ -57,10 +56,11 @@ object EnvReader {
       def readEnv: Out = hEnvReader.value.readEnv :: tEnvReader.readEnv
     }
 
-  implicit def genericEnvReader[A, R, RO](implicit generic: LabelledGeneric.Aux[A, R], envReader: Lazy[EnvReader.Aux[R, RO]]): Aux[A, RO] = new EnvReader[A] {
-    type Out = RO
+  implicit def genericEnvReader[A, R, RO](implicit generic: LabelledGeneric.Aux[A, R], envReader: Lazy[EnvReader.Aux[R, RO]]): Aux[A, RO] =
+    new EnvReader[A] {
+      type Out = RO
 
-    def readEnv: Out = envReader.value.readEnv
-  }
+      def readEnv: Out = envReader.value.readEnv
+    }
 
 }

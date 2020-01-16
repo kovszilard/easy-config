@@ -4,16 +4,14 @@ import easyconfig.EnvReader._
 import shapeless._
 import shapeless.ops.hlist._
 import shapeless.ops._
-//import shapeless.ops.hlist.Mapper
-//import shapeless.ops.hlist.Zip
 
 object Test2 extends App {
   import ConfigReader._
 
   case class Foo(str: String, num: Int = 100)
 
-  val config = ConfigReader[Foo].readConfig
-  println(config)
+//  val config = ConfigReader[Foo].readConfig
+//  println(config)
 
 //  object folderTest extends Poly2 {
 //    implicit val allCase: Case.Aux[Int, Int, Int] = at( (a, b) => a + b)
@@ -36,20 +34,28 @@ object Test2 extends App {
 //
 //  println((1 :: 2 :: HNil).foldRight(HNil)(foldRTest))
 
-  object folder extends Poly2 {
-    implicit def allCase[A, ACC <: HList]: Case.Aux[Either[AllErrors, A], Either[AllErrors, ACC], Either[AllErrors, A :: ACC]] =
-      at{ (a, acc) =>
-        acc match {
-          case Left(error) => Left(error)
-          case Right(l) => a match {
-            case Right(r) => Right(r :: l)
-            case Left(err) => Left(err)
-          }
-        }
-      }
-  }
+//  object folder extends Poly2 {
+//    implicit def allCase[A, ACC <: HList]: Case.Aux[Either[Error, A], Either[Error, ACC], Either[Error, A :: ACC]] =
+//      at{ (a, acc) =>
+//        acc match {
+//          case Left(error) => Left(error)
+//          case Right(l) => a match {
+//            case Right(r) => Right(r :: l)
+//            case Left(err) => Left(err)
+//          }
+//        }
+//      }
+//  }
+//
+//  println(config.foldRight(Right(HNil): Either[Error, HNil])(folder))
+//  val e = config.foldRight(Right(HNil): Either[Error, HNil])(folder)
+//
+//  println(e.map( right => Generic[Foo].from(right)))
 
-  println(config.foldRight(Right(HNil): Either[AllErrors, HNil])(folder))
+//  val c = EasyConfig[Foo].getConfig(args.toList)
+  println(implicitly[Default.AsOptions[Foo]].apply())
+
+  import DefaultReader._
 
 }
 
@@ -62,7 +68,7 @@ object ConfigReader {
   type Aux[I, O] = ConfigReader[I] { type Out = O }
 
   object envOrDefault extends Poly1 {
-    implicit def allCase[A]: Case.Aux[(Either[AllErrors, A], Option[A]), Either[AllErrors, A]] =
+    implicit def allCase[A]: Case.Aux[(Either[Error, A], Option[A]), Either[Error, A]] =
       at{
         case (Right(x), _) => Right(x)
         case (Left(_), Some(y)) => Right(y)
