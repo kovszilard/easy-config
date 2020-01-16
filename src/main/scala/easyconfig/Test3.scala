@@ -52,15 +52,11 @@ object Test3 extends App {
   println(o)
 
   val easyConfig = EasyConfig[Foo]
-//  val easyConfigResult: Either[AllError, Int :: String :: HNil] = easyConfig.getConfig(myArgs)
   val easyConfigResult = easyConfig.getConfig(myArgs)
   println("easyConfigResult: " + easyConfigResult)
 
-//  val test = Right(42 :: "hello" :: HNil)
   val gen = Generic[Foo]
   println("Test: " + easyConfigResult.map(hl => gen.from(hl)))
 
-//  import Done._
-//  val d = Done[Foo]
-//  println(d.getConfig(myArgs))
+  println("Done: " + Done[Foo].getConfig(myArgs))
 }
