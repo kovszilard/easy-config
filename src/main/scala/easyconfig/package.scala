@@ -16,7 +16,7 @@ package object easyconfig {
 
   def easyConfigHelp[A](implicit genHelp: GenHelp[A]): String = genHelp.genHelp
 
-  def reportError(res: List[ReaderError]): List[String] = res.map{
+  private def reportError(res: List[ReaderError]): List[String] = res.map{
     case DefaultNotFound(fieldName) => s"Configuration $fieldName is missing, please provide default value in code,\n" +
       s" or environment variable ${readers.EnvReader.fieldNameToEnvVar(fieldName)},\n" +
       s" or command line argument ${readers.ArgReader.fieldNameToArg(fieldName)}"

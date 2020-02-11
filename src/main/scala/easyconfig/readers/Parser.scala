@@ -1,5 +1,8 @@
 package easyconfig.readers
 
+import java.text.SimpleDateFormat
+
+import scala.concurrent.duration.Duration
 import scala.util.Try
 
 trait Parser[A] {
@@ -23,6 +26,10 @@ object Parser {
   implicit val doubleParser = createParser(s => Try(s.toDouble))
 
   implicit val booleanParser = createParser(s => Try(s.toBoolean))
+
+  implicit val dateParser = createParser(s => Try(new SimpleDateFormat("yyyy-MM-dd").parse(s)))
+
+  implicit val durationParser = createParser(s => Try(Duration.apply(s)))
 
   implicit def optionParser[A](implicit parser: Parser[A]) = createParser { s =>
     val parsed = parser.parse(s)
