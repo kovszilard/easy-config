@@ -24,17 +24,23 @@ object Parser {
 
   implicit val booleanParser = createParser(s => Try(s.toBoolean))
 
-//  implicit def listParser[A](implicit elementParser: Parser[A]): Parser[List[A]] = createParser { s =>
-//    s.split(",").toList.map(elementParser.parse)
-//  }
-//  implicit def seqParser[A](implicit listParser: Parser[List[A]]): Parser[Seq[A]] = createParser{ s =>
-//    listParser.parse(s).toSeq
-//  }
-//  implicit def vectorParser[A](implicit listParser: Parser[List[A]]): Parser[Vector[A]] = createParser{ s =>
-//    listParser.parse(s).toVector
-//  }
-//  implicit def setParser[A](implicit listParser: Parser[List[A]]): Parser[Set[A]] = createParser{ s =>
-//    listParser.parse(s).toSet
-//  }
+  implicit def optionParser[A](implicit parser: Parser[A]) = createParser { s =>
+    val parsed = parser.parse(s)
+    parsed.map(Option(_))
+  }
+
+  implicit def listParser[A](implicit elementParser: Parser[A]): Parser[List[A]] = createParser { s =>
+    val lts = s.split(",").toList.map(elementParser.parse)
+    Try(lts.map(_.get))
+  }
+  implicit def seqParser[A](implicit listParser: Parser[List[A]]): Parser[Seq[A]] = createParser{ s =>
+    listParser.parse(s).map(_.toSeq)
+  }
+  implicit def vectorParser[A](implicit listParser: Parser[List[A]]): Parser[Vector[A]] = createParser{ s =>
+    listParser.parse(s).map(_.toVector)
+  }
+  implicit def setParser[A](implicit listParser: Parser[List[A]]): Parser[Set[A]] = createParser{ s =>
+    listParser.parse(s).map(_.toSet)
+  }
 
 }
