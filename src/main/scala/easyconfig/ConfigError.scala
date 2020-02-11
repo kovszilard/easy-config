@@ -1,5 +1,5 @@
 package easyconfig
 
-sealed abstract class ConfigError(message: String)
-case class Help(message: String) extends ConfigError(message)
-case class MissingField(message: String) extends ConfigError(message)
+sealed abstract class ConfigResponse(message: String)
+case class Help(message: String) extends ConfigResponse(message)
+case class ConfigError(message: String) extends ConfigResponse(message)

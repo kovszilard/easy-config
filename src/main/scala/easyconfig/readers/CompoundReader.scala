@@ -30,6 +30,35 @@ object CompoundReader {
       }
   }
 
+  object folder2 extends Poly2 {
+    implicit def allCase2[E <: ReaderError, A, ACC <: HList]: Case.Aux[Either[E, A], Either[List[E], ACC], Either[List[E], A :: ACC]] =
+//      at { (a, acc) =>
+//        acc match {
+//          case Left(acce) => a match {
+//            case Right(_) => Left(acce)
+//            case Left(e) => Left(acce ++ e)
+//          }
+//          case Right(hl) => a match {
+//            case Right(value) => Right(value :: hl)
+//            case Left(e) => Left(e)
+//          }
+//        }
+//      }
+
+      at { (a, acc) =>
+        acc match {
+          case Left(acce) => a match {
+            case Right(_) => Left(acce)
+            case Left(e) => Left(acce.appended(e))
+          }
+          case Right(hl) => a match {
+            case Right(value) => Right(value :: hl)
+            case Left(e) => Left(List(e))
+          }
+        }
+      }
+  }
+
   implicit def compoundReader[A,
                               DO <: HList,
                               EO <: HList,
@@ -44,7 +73,7 @@ object CompoundReader {
       overrideDefault: Override.Aux[DO, EO, ODO],
       ar: ArgReader.Aux[A, AO],
       overrideEnv: Override.Aux[ODO, AO, O],
-      rightFolder: RightFolder.Aux[O, Either[List[ReaderError], HNil], folder.type, FO]
+      rightFolder: RightFolder.Aux[O, Either[List[ReaderError], HNil], folder2.type, FO]
     ): Aux[A, FO] =
     new CompoundReader[A] {
       type Out = FO

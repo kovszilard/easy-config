@@ -14,20 +14,26 @@ object Test extends App {
   val defaultReader2 = DefaultReader[Foo]
   println("defaultReader2: " + defaultReader2.readDefault)
 
+  val envReader = EnvReader[Foo]
+  println("envReader: " + envReader.readEnv)
 
-  case class Out(field1: Int, field2: In)
-  case class In(field1: Int, field2: In2)
-  case class In2(field1: Int)
+  val argReader = ArgReader[Foo]
+  println("argReader: " + argReader.readArgs(List("--str", "readed from args")))
 
-  val test = Out(42, In(-42, In2(100)))
 
-  val fieldNames2 = FieldNames[Out]
-  val gen = Generic[Out]
-  println("fieldNames2: " + fieldNames2.apply)
-  println("gen: " + gen.to(test))
-
-  val gen2 = DeepGeneric[Out]
-  println("gen2: " + gen2.to(test))
+//  case class Out(field1: Int, field2: In)
+//  case class In(field1: Int, field2: In2)
+//  case class In2(field1: Int)
+//
+//  val test = Out(42, In(-42, In2(100)))
+//
+//  val fieldNames2 = FieldNames[Out]
+//  val gen = Generic[Out]
+//  println("fieldNames2: " + fieldNames2.apply)
+//  println("gen: " + gen.to(test))
+//
+//  val gen2 = DeepGeneric[Out]
+//  println("gen2: " + gen2.to(test))
 
 
 }

@@ -26,10 +26,10 @@ object EnvReader {
     val envValValue = sys.env.get(fieldNameToEnvVar(fieldName))
     envValValue match {
       case Some(v) => parser.parse(v) match {
-        case Failure(exception) => Left(EnvParseError(fieldNameToEnvVar(fieldName), exception.getMessage))
+        case Failure(exception) => Left(EnvParseError(fieldName, fieldNameToEnvVar(fieldName), exception.getMessage))
         case Success(value) => Right(value)
       }
-      case None => Left(EnvNotFound(fieldNameToEnvVar(fieldName)))
+      case None => Left(EnvNotFound(fieldName, fieldNameToEnvVar(fieldName)))
     }
 
   }

@@ -28,10 +28,10 @@ object ArgReader {
   private def getArg[A](args: List[String], fieldName: String)(implicit parser: Parser[A]): Either[ArgReaderError, A] = {
     argsList2Map(args).get(fieldNameToArg(fieldName)) match {
       case Some(value) => parser.parse(value) match {
-        case Failure(exception) => Left(ArgParseError(fieldNameToArg(fieldName), exception.getMessage))
+        case Failure(exception) => Left(ArgParseError(fieldName, fieldNameToArg(fieldName), exception.getMessage))
         case Success(value) => Right(value)
       }
-      case None => Left(ArgNotFound(fieldNameToArg(fieldName)))
+      case None => Left(ArgNotFound(fieldName, fieldNameToArg(fieldName)))
     }
   }
 
