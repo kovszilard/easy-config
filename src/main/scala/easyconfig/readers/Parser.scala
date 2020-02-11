@@ -1,4 +1,4 @@
-package easyconfig
+package easyconfig.readers
 
 import scala.util.Try
 

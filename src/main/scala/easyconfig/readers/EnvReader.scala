@@ -1,4 +1,4 @@
-package easyconfig
+package easyconfig.readers
 
 import shapeless._
 import shapeless.labelled._
@@ -20,7 +20,7 @@ object EnvReader {
 
   def apply[A](implicit envReader: EnvReader[A]): Aux[A, envReader.Out] = envReader
 
-  private def fieldNameToEnvVar(name: String): String = name.flatMap( c => if(c.isUpper) List('_', c) else List(c)).mkString.toUpperCase
+  private[easyconfig] def fieldNameToEnvVar(name: String): String = name.flatMap( c => if(c.isUpper) List('_', c) else List(c)).mkString.toUpperCase
 
   private def getEnv[A](fieldName: String)(implicit parser: Parser[A]): Either[EnvReaderError, A] = {
     val envValValue = sys.env.get(fieldNameToEnvVar(fieldName))

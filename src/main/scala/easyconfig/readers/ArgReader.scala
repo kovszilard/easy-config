@@ -1,4 +1,4 @@
-package easyconfig
+package easyconfig.readers
 
 import shapeless._
 import shapeless.labelled.FieldType
@@ -16,7 +16,7 @@ object ArgReader {
 
   def apply[A](implicit argsReader: ArgReader[A]): Aux[A, argsReader.Out] = argsReader
 
-  private def fieldNameToArg(name: String): String = "--" + name.flatMap( c => if(c.isUpper) List('-', c) else List(c)).mkString.toLowerCase
+  private[easyconfig] def fieldNameToArg(name: String): String = "--" + name.flatMap( c => if(c.isUpper) List('-', c) else List(c)).mkString.toLowerCase
 
   private def argsList2Map(args: List[String]): Map[String, String] = {
     args.sliding(2, 2).flatMap{

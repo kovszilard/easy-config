@@ -1,10 +1,7 @@
 package easyconfig
 
-import easyconfig.DefaultReader.opt2Either.at
-import easyconfig.CompoundReader.folder.at
-import easyconfig.Override.Aux
-import shapeless._
-import shapeless.ops.hlist._
+import readers._
+import helpers._
 
 object Test3 extends App {
 
@@ -16,9 +13,15 @@ object Test3 extends App {
   val envReader = EnvReader[Foo]
   println("Env: " + envReader.readEnv)
 
+  val o1 = Override[defaults.Out, envReader.Out]
+  println("o1: " + o1.overrideLeft(defaults.readDefault, envReader.readEnv))
+
   val argReader = ArgReader[Foo]
   val myArgs = List("--num", "42", "--str", "hello")
   println("Args: " + argReader.readArgs(myArgs))
+
+  val o2 = Override[o1.Out, argReader.Out]
+  println("o2: " + o2.overrideLeft(o1.overrideLeft(defaults.readDefault, envReader.readEnv), argReader.readArgs(List.empty)))
 
   val orEnv = Override[defaults.Out, envReader.Out]
   val overriddenByEnv = orEnv.overrideLeft(defaults.readDefault, envReader.readEnv)
@@ -32,10 +35,9 @@ object Test3 extends App {
   val compoundReaderResult = compoundReader.getConfig(myArgs)
   println("compoundReaderResult: " + compoundReader)
 
-  println("ConfigRequest: " + ConfigRequest[Foo].getConfig(myArgs))
+  println("GenConfig: " + GenConfig[Foo].getConfig(myArgs))
 
-  println("Nice: " + easyConfig[Foo](List.empty))
   println("Nice2: " + easyConfig[Foo](myArgs))
+  println("Nice: " + easyConfig[Foo](List.empty))
 
-  println("Default.AsRecord: " + Default.AsRecord[Foo].apply())
 }
