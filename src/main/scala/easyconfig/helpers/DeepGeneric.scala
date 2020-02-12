@@ -1,4 +1,4 @@
-package easyconfig
+package easyconfig.helpers
 
 import shapeless._
 import shapeless.labelled._

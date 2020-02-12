@@ -14,6 +14,9 @@ package object easyconfig {
     }
   }
 
+  def easyConfig[A: GenHelp](args: Array[String])(implicit configRequest: GenConfig[A]): Either[String, A] =
+    easyConfig(args.toList)
+
   def easyConfigHelp[A](implicit genHelp: GenHelp[A]): String = genHelp.genHelp
 
   private def reportError(res: List[ReaderError]): List[String] = res.map{

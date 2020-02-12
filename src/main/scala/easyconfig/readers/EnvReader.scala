@@ -5,10 +5,6 @@ import shapeless.labelled._
 
 import scala.util.{Failure, Success}
 
-// trait EnvReader[K, V, A <: FieldType[K, V]] {
-//  def readEnv: V
-// }
-
 trait EnvReader[A] {
   type Out
   def readEnv: Out

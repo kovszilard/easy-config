@@ -16,6 +16,7 @@ lazy val root = (project in file("."))
     libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     scalacOptions ++= Seq(
 //      "-Xlog-implicits"
+      "-deprecation"
     )
   )
 
