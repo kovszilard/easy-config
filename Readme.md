@@ -43,7 +43,12 @@ object MyApp extends App {
 
 }
 ```
+## Configuration precedence
+
+Case class default values < Environment variables < Command line arguments
+
+Default values defined on the case class are overridden by environment variables. In addition, command line arguments override configuration provided in the environment.
 
 ## Do you like this project? ❤️
 
-Please give it a star. It is just one click for you, and it keeps me motivated to write open source tools like this.
+Please give it a star. It is just one click for you and it keeps me motivated to write open source tools like this.
