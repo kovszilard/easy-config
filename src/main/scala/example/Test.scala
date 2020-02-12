@@ -1,4 +1,6 @@
-package easyconfig
+package example
+
+import easyconfig._
 
 object Test extends App {
 
