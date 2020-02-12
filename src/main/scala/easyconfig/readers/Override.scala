@@ -29,7 +29,7 @@ object Override {
         case (Right(_), Right(b)) => Right(b)
         case (Right(a), Left(_)) => Right(a)
         case (Left(_), Right(b)) => Right(b)
-        case (Left(a), Left(b)) => Left(a.appended(b))
+        case (Left(a), Left(b)) => Left(a.:+(b))
       }
   }
 

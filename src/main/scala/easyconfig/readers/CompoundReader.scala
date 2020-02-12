@@ -37,7 +37,7 @@ object CompoundReader {
         acc match {
           case Left(acce) => a match {
             case Right(_) => Left(acce)
-            case Left(e) => Left(acce.appended(e))
+            case Left(e) => Left(acce.:+(e))
           }
           case Right(hl) => a match {
             case Right(value) => Right(value :: hl)

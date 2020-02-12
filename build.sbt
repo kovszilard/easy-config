@@ -1,17 +1,18 @@
 import Dependencies._
 
 ThisBuild / scalaVersion     := "2.13.1"
-ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+ThisBuild / crossScalaVersions := List("2.13.1", "2.12.10")
+ThisBuild / version          := "0.1.0"
+ThisBuild / organization     := "com.github.kovszilard"
+ThisBuild / organizationName := "kovszilard"
+
 
 lazy val root = (project in file("."))
   .settings(
     name := "easy-config",
     libraryDependencies += scalaTest % Test,
     libraryDependencies ++= Seq(
-      "com.chuusai" %% "shapeless" % "2.3.3",
-      "org.typelevel" %% "cats-core" % "2.0.0"
+      "com.chuusai" %% "shapeless" % "2.3.3"
     ),
     libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     scalacOptions ++= Seq(
