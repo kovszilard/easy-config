@@ -1,4 +1,5 @@
 # Easy Config
+[![Build Status](https://travis-ci.org/kovszilard/easy-config.svg?branch=master)](https://travis-ci.org/kovszilard/easy-config)
 [![Maven central](https://img.shields.io/maven-central/v/com.github.kovszilard/easy-config_2.12)](https://search.maven.org/search?q=com.github.kovszilard.easy-config)
 [![Tweet](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fkovszilard%2Feasy-config)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Fkovszilard%2Feasy-config)
 [![Twitter follow](https://img.shields.io/twitter/follow/kovszilard?style=social)](https://twitter.com/intent/follow?screen_name=kovszilard)
