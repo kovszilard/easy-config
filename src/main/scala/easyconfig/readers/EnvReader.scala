@@ -1,5 +1,6 @@
 package easyconfig.readers
 
+import easyconfig.Parser
 import shapeless._
 import shapeless.labelled._
 

@@ -1,4 +1,4 @@
-package easyconfig.readers
+package easyconfig
 
 import java.text.SimpleDateFormat
 
