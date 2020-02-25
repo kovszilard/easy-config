@@ -1,4 +1,4 @@
-package example
+package examples
 
 import easyconfig._
 
@@ -6,7 +6,7 @@ object Secret extends App {
 
   case class Config(password: Secret)
 
-  val config =easyConfig[Config](args)
+  val config = easyConfig[Config](args)
 
   config.fold(
     help => println(help),

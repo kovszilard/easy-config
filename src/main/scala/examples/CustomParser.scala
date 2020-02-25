@@ -1,4 +1,4 @@
-package example
+package examples
 
 import scala.util.Try
 import easyconfig._

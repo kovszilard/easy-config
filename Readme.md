@@ -55,7 +55,7 @@ Default values defined on the case class are overridden by environment variables
 
 In case you have a not supported data type or you want to parse differently than Easy Config does it, then you have to create a parser for yourself. Luckily it is very easy, just define an implicit Parser instance using the `createParser` method. `createParser` takes a function from `String` to `Try[A]`, where `A` is your data type.
 
-See an example below:
+See an examples below:
 
 ```scala
 import scala.util.Try
@@ -95,7 +95,7 @@ object Secret extends App {
 
   case class Config(password: Secret)
 
-  val config =easyConfig[Config](args)
+  val config = easyConfig[Config](args)
 
   config.fold(
     help => println(help),
