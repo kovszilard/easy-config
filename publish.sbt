@@ -1,4 +1,4 @@
-ThisBuild / description := "Easy Config makes Scala (12 factor) application configuration extremely easy. It reads configuration from the environment or command line arguments."
+ThisBuild / description := "Easy Config makes Scala application configuration extremely easy. It reads configuration from the environment or command line arguments."
 ThisBuild / homepage := Some(url("https://github.com/kovszilard/easy-config"))
 ThisBuild / organizationHomepage := Some(url("https://github.com/kovszilard/"))
 ThisBuild / licenses := List("MIT" -> new URL("http://opensource.org/licenses/MIT"))
