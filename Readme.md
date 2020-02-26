@@ -23,7 +23,7 @@ Easy Config makes Scala application configuration extremely easy. It reads confi
 Include it in your project by adding the following to your build.sbt:
 
 ```scala
-libraryDependencies += "com.github.kovszilard" %% "easy-config" % "0.1.0"
+libraryDependencies += "com.github.kovszilard" %% "easy-config" % "0.2.1"
 ```
 
 Request configuration or a help String if something goes wrong.
