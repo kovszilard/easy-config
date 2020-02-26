@@ -5,7 +5,7 @@ lazy val scala213 = "2.13.1"
 lazy val supportedScalaVersions = List(scala213, scala212)
 
 ThisBuild / scalaVersion     := scala213
-ThisBuild / crossScalaVersions := List("2.13.1", "2.12.10")
+ThisBuild / crossScalaVersions := supportedScalaVersions
 ThisBuild / organization     := "com.github.kovszilard"
 ThisBuild / organizationName := "kovszilard"
 
@@ -33,6 +33,7 @@ useGpgPinentry := true
 lazy val root = (project in file("."))
   .settings(
     name := "easy-config",
+    releaseCrossBuild := true,
     libraryDependencies ++= Seq(scalaTest % Test, shapeless),
     scalacOptions ++= Seq(
 //      "-Xlog-implicits"
