@@ -45,6 +45,18 @@ object MyApp extends App {
 
 }
 ```
+## Field name to environment variable conversion
+
+Simple lower case fields are expected to be all uppercase environment variables. For example field `name` expected to be `NAME` in the environment.
+
+Camel cased fields are expected to be all uppercase environment variables with an underscore before each uppercase letter. For example field `firstName` expected to be `FIRST_NAME` or `customerFirstName` expected to be `CUSTOMER_FIRST_NAME` in the environment.
+
+## Field name to command line argument conversion
+
+Simple lower case fields are expected to be the same with trailing double dashes. For example field `name` expected to be `--name` in command line arguments.
+
+Camel cased fields are expected to be all lowercase letters with trailing double dashes and a dash before each uppercase letter. For example field `firstName` expected to be `--first-name` or `customerFirstName` expected to be `--customer-first-name` in command line arguments.
+
 ## Configuration precedence
 
 Case class default values < Environment variables < Command line arguments
