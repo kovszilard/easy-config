@@ -45,13 +45,16 @@ object MyApp extends App {
 
 }
 ```
-## Field name to environment variable conversion
+
+## Field name conversions
+
+### Environment variables
 
 Simple lower case fields are expected to be all uppercase environment variables. For example field `name` expected to be `NAME` in the environment.
 
 Camel cased fields are expected to be all uppercase environment variables with an underscore before each uppercase letter. For example field `firstName` expected to be `FIRST_NAME` or `customerFirstName` expected to be `CUSTOMER_FIRST_NAME` in the environment.
 
-## Field name to command line argument conversion
+### Command line arguments
 
 Simple lower case fields are expected to be the same with trailing double dashes. For example field `name` expected to be `--name` in command line arguments.
 
@@ -63,7 +66,24 @@ Case class default values < Environment variables < Command line arguments
 
 Default values defined on the case class are overridden by environment variables. In addition, command line arguments override configuration provided in the environment.
 
-## Creating parsers
+## Parsing
+
+### Arguments separated with spaces
+
+You can define `fullName` in the environment as `FULL_NAME="John Smith"`.
+
+Or, in command line as `--full-name "John Smith"`
+
+### Lists
+
+Lists are separated by commas. In the environment `FRUITS="apple,banana"`
+
+Or, in command line as `--fruits apple,banana`
+
+NOTE: trailing spaces are included, so `FRUITS="apple, banana"` or `--fruits apple, banana` will become `List("apple", " banana")`.
+
+
+### Creating parsers
 
 In case you have a not supported data type or you want to parse differently than Easy Config does it, then you have to create a parser for yourself. Luckily it is very easy, just define an implicit Parser instance using the `createParser` method. `createParser` takes a function from `String` to `Try[A]`, where `A` is your data type.
 
